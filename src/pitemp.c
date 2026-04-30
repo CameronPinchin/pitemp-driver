@@ -27,47 +27,51 @@ const struct file_operations my_fops = {
     .write  = my_write
 };
 
-static int __init __init_tempdevice(void)
+static int __init_tempdevice(void)
 {
     int err, i;
-    // register a contiguous range of dev numbers
-    err = register_chrdev_region( MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 Temperature Sensor driver" );
 
-    if( err != 0 ){
-        printk( KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 temperature sensor." );
+    err = register_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 Temperature Sensor driver");
+    if (err != 0) {
+        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 temperature sensor.");
         return err;
     }
 
     for(i = 0; i < MY_MAX_MINORS; i++){
         cdev_init( &devs[i].cdev, &my_fops );
-        cdev_add( &cdev[i].cdev, MKDEV(MY_MAJOR, i), 1);
+        cdev_add( &devs[i].cdev, MKDEV(MY_MAJOR, i), 1);
     }
 
-    printk( KERN_INFO "[RP1-IO] Initialization of %d RP1-IO temperature sensor devices was successful.", MY_MAX_MINORS );
+    printk(KERN_INFO "[RP1-IO] Initialization of %d RP1-IO temperature sensor devices was successful.", MY_MAX_MINORS);
+
     return 0;
 }
 
-static vid __exit __cleanup_tempdevice(void)
+static void __cleanup_tempdevice(void)
 {
     int i;
-    for(i = 0; i < MY_MAX_MINORS; i++){
-        cdev_del( &devs[i].cdev );
+
+    for(i = 0; i < MY_MAX_MINORS; i++) {
+        cdev_del(&devs[i].cdev);
     }
 
     unregister_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS);
-    printk( KERN_INFO "[RP1-IO] Cleanup of %d RP1-IO temperature sensor devices was successful.");
+    printk( KERN_INFO "[RP1-IO] Cleanup of %d RP1-IO temperature sensor devices was successful.", MY_MAX_MINORS);
 }
 
+/* Driver-side response to 'open' systemcall when used /dev/temp (?) */
 static int my_open(struct inode *inode, struct file *file)
 {
 
 }
 
+/* Driver-side response to 'read' systemcall when used /dev/temp (?) */
 static int my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset)
 {
 
 }
 
+/* Driver-side response to 'write' systemcall when used /dev/temp (?) */
 static int my_write( struct file *file, char __user *user_buffer, size_t size, loff_t *offset )
 {
 
