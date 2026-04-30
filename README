@@ -1,0 +1,20 @@
+** There is already an exposed interface for this via /sys/thermal*(?)
+**  This is for praciting geniune driver development
+
+Linux Driver for the temperature sensor on the Raspberry Pi 5.
+ - Idea is to practice driver development, experience with kernel space vs userspace.
+ - Port this to a QNX Resource Manager
+
+Linux Driver: pitemp.so (? maybe change the name)
+
+Resources:
+
+BCM2712 Datasheet
+
+RP1 Datasheet
+https://pip-assets.raspberrypi.com/categories/892-raspberry-pi-5/documents/RP-008370-DS-1-rp1-peripherals.pdf?disposition=inline
+
+Initial understanding:
+- I want to be targetting the RP1 I/O controller
+- Specifically, contains a "12-bit ADC with temperature sensor"
+- It would be a character device, since the data transfers would be small and infrequent
