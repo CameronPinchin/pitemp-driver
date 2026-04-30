@@ -4,7 +4,7 @@
 #include <linux/cdev.h>
 #include <linux/fs.h>
 #include <linux/types.h>
-#include <asm/uaccess.h
+#include <asm/uaccess.h>
 
 #define DRIVER_AUTHOR           "Cameron Pinchin <cwpinchin@outlook.com>"
 #define DRIVER_DESC             "Driver for temperature sensor on the RP1 I/O Controller"
@@ -14,7 +14,7 @@
 
 struct temp_device_data {
     struct cdev cdev;
-    char buffer[];          // unsure what to size
+    char buffer[1024];          // unsure what to size
     int16_t size;           // likely change, provides 16-bits though
 }
 
