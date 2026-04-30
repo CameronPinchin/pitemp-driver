@@ -58,6 +58,21 @@ static vid __exit __cleanup_tempdevice(void)
     printk( KERN_INFO "[RP1-IO] Cleanup of %d RP1-IO temperature sensor devices was successful.");
 }
 
+static int my_open(struct inode *inode, struct file *file)
+{
+
+}
+
+static int my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset)
+{
+
+}
+
+static int my_write( struct file *file, char __user *user_buffer, size_t size, loff_t *offset )
+{
+
+}
+
 /* MACRO CALLS */
 module_init(__init_tempdevice);
 module_exit(__cleanup_tempdevice);
