@@ -1,5 +1,5 @@
 ** There is already an exposed interface for this via /sys/thermal*(?)
-**  This is for praciting geniune driver development
+**  This is for praciting genuine driver development
 
 Linux Driver for the temperature sensor on the Raspberry Pi 5.
  - Idea is to practice driver development, experience with kernel space vs userspace.
