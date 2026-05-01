@@ -1,5 +1,7 @@
 #include "pitemp.h"
 
+struct temp_device_data devs[MY_MAX_MINORS];
+
 static int __init_tempdevice(void)
 {
     int err, i;
@@ -36,6 +38,6 @@ static void __cleanup_tempdevice(void)
 module_init(__init_tempdevice);
 module_exit(__cleanup_tempdevice);
 
-MODULE_LICENSE("MIT");
+MODULE_LICENSE(DRIVER_LICENSE);
 MODULE_AUTHOR(DRIVER_AUTHOR);
 MODULE_DESCRIPTION(DRIVER_DESC);

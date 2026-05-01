@@ -1,3 +1,5 @@
+#include "pitemp.h"
+
 /* Driver-side response to 'open' systemcall when used /dev/temp (?) */
 static int my_open(struct inode *inode, struct file *file)
 {
@@ -20,5 +22,13 @@ static int my_read(struct file *file, char __user *user_buffer, size_t size, lof
 static int my_write( struct file *file, char __user *user_buffer, size_t size, loff_t *offset )
 {
     struct temp_devuce_data *my_data;
-    my_data=
+    
 }
+
+/* Driver-side response to 'write' systemcall when used /dev/temp (?) */
+static int my_release(struct inode *inode, struct file *file)
+{
+    struct temp_devuce_data *my_data;
+
+}
+

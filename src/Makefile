@@ -2,7 +2,7 @@
 # Calls on the kernels build system instead of directly using gcc
 KERNEL_VERSION:=$(shell uname -r)
 
-obj-m += chardriver.o
+obj-m += pitemp.o
 pitemp-objs := init.o file_ops.o ioctl.o 
 
 all:
