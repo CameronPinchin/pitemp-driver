@@ -2,8 +2,10 @@
 # Calls on the kernels build system instead of directly using gcc
 KERNEL_VERSION:=$(shell uname -r)
 
+# ccflags-y --> adds compiler flags
+
 obj-m += pitemp.o
-pitemp-objs := init.o file_ops.o ioctl.o 
+pitemp-objs := pitemp_init.o file_ops.o pitemp_ioctl.o 
 
 all:
 	make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
