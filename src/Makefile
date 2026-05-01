@@ -3,6 +3,7 @@
 KERNEL_VERSION:=$(shell uname -r)
 
 obj-m += chardriver.o
+pitemp-objs := init.o file_ops.o ioctl.o 
 
 all:
 	make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
