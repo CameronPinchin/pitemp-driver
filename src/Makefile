@@ -5,7 +5,7 @@ KERNEL_VERSION:=$(shell uname -r)
 # ccflags-y --> adds compiler flags
 
 obj-m += pitemp.o
-pitemp-objs := pitemp_init.o file_ops.o pitemp_ioctl.o 
+pitemp-objs := pitemp_init.o pitemp_fileops.o pitemp_ioctl.o 
 
 all:
 	make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
