@@ -11,8 +11,9 @@
 
 static long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
-    struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
-    temp_ioctl_data mid;
+    // temp_device_data *my_data = (struct temp_device_data *)file->private_data;
+    // struct ---temp_ioctl_data mid;
 
     return 0;
 }
+

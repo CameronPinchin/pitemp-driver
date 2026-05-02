@@ -19,25 +19,13 @@
 #define MY_IOCTL_IN _IOC(_IOC_WRITE, 'k', 1, sizeof(my_ioctl_data))
 // #define MY_IOCTL_OUT _IOC(_IOC_READ, 'k', )
 
+static int __init_tempdevice(void);
+static void __cleanup_tempdevice(void);
 static int my_open(struct inode *, struct file *);
 ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
 ssize_t my_write(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
 static long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 
-struct temp_device_data {
-    struct cdev cdev;
-    char buffer[1024];          // unsure what to size
-    int16_t size;           // likely change, provides 16-bits though
-};
-
-struct temp_ioctl_data {
-
-};
-
-const struct file_operations my_fops = {
-    .owner  = THIS_MODULE,
-    .open   = my_open,
-    .read   = my_read
-};
+extern const struct file_operations my_fops;
 
 #endif

@@ -1,5 +1,18 @@
 #include "pitemp.h"
 
+struct temp_device_data {
+    struct cdev cdev;
+    char buffer[1024];          // unsure what to size
+    size_t size;           // likely change, provides 16-bits though
+};
+
+const struct file_operations my_fops = {
+    .owner          = THIS_MODULE,
+    .open           = my_open,
+    .read           = my_read
+};
+
+
 struct temp_device_data devs[MY_MAX_MINORS];
 
 static int __init_tempdevice(void)
@@ -48,10 +61,12 @@ static int my_open(struct inode *inode, struct file *file)
 }
 
 /* Driver-side response to 'read(int fd, void buf[], size_t cnt)' systemcall when used /dev/temp (?) */
-ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset)
+ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t * offset)
 {
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
-    ssize_t len = min(my_data->size - *offset, size); // length of the data (?)
+    ssize_t len = min_t(size_t, my_data->size - *offset, size); // length of the data (?)
+    // signedness issue
+    // size_t size: (unsigned), loff_t * offset (signed), int16_t size: signed
 
     if (len <= 0)
         return 0;
@@ -64,10 +79,10 @@ ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t
     return len;
 }
 
-ssize_t my_write( struct file *file, char __user *user_buffer, size_t size, loff_t *offset )
+ssize_t my_write( struct file *file, char __user *user_buffer, size_t size, loff_t * offset )
 {
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
-    ssize_t len = min(my_data->size - *offset, size);
+    ssize_t len = min_t(size_t, my_data->size - *offset, size);
 
     if (len <= 0)
         return 0;
