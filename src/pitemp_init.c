@@ -15,7 +15,7 @@ const struct file_operations my_fops = {
 
 struct temp_device_data devs[MY_MAX_MINORS];
 
-static int init_tempdevice(void)
+int init_tempdevice(void)
 {
     int err, i;
 
@@ -35,7 +35,7 @@ static int init_tempdevice(void)
     return 0;
 }
 
-static void cleanup_tempdevice(void)
+void cleanup_tempdevice(void)
 {
     int i;
 
