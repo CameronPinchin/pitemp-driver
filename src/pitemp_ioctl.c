@@ -9,7 +9,7 @@
  *          size: represents the size of the transferred data.
  */
 
-static long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
     // temp_device_data *my_data = (struct temp_device_data *)file->private_data;
     // struct ---temp_ioctl_data mid;

@@ -21,10 +21,10 @@
 
 int init_tempdevice(void);
 void cleanup_tempdevice(void);
-static int my_open(struct inode *, struct file *);
+int my_open(struct inode *, struct file *);
 ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
 ssize_t my_write(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
-static long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 
 extern const struct file_operations my_fops;
 

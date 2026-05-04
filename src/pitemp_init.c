@@ -12,18 +12,17 @@ const struct file_operations my_fops = {
     .read           = my_read
 };
 
-
 struct temp_device_data devs[MY_MAX_MINORS];
 
 int init_tempdevice(void)
 {
     int err, i;
 
-    printk(KERN_INFO "[RP1-IO] Initializing %d RP1-IO temperature sensor devices.", MY_MAX_MINORS);
+    printk(KERN_INFO "[RP1-IO] Initializing %d RP1-IO temperature sensor devices.\n", MY_MAX_MINORS);
 
     err = register_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 Temperature Sensor driver");
     if (err != 0) {
-        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 temperature sensor.");
+        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 temperature sensor.\n");
         return err;
     }
 
@@ -39,7 +38,7 @@ void cleanup_tempdevice(void)
 {
     int i;
 
-    printk( KERN_INFO "[RP1-IO] Cleaning up %d RP1-IO temperature sensor devices.", MY_MAX_MINORS);
+    printk( KERN_INFO "[RP1-IO] Cleaning up %d RP1-IO temperature sensor devices.\n", MY_MAX_MINORS);
 
     for(i = 0; i < MY_MAX_MINORS; i++) {
         cdev_del(&devs[i].cdev);
@@ -49,7 +48,7 @@ void cleanup_tempdevice(void)
 }
 
 /* Driver-side response to 'open' systemcall when used /dev/temp (?) */
-static int my_open(struct inode *inode, struct file *file)
+int my_open(struct inode *inode, struct file *file)
 {
     struct temp_device_data *my_data;
     
