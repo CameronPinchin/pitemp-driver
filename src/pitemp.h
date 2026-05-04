@@ -17,15 +17,14 @@
 #define DRIVER_LICENSE      "MIT"
 
 #define MY_IOCTL_IN _IOC(_IOC_WRITE, 'k', 1, sizeof(my_ioctl_data))
-// #define MY_IOCTL_OUT _IOC(_IOC_READ, 'k', )
+// #define MY_IOCTL_OUT _IOC(_IOC_READ, 'k', x, y )
+extern const struct file_operations my_fops;
 
-static int __init_tempdevice(void);
-static void __cleanup_tempdevice(void);
+static int init_tempdevice(void);
+static void cleanup_tempdevice(void);
 static int my_open(struct inode *, struct file *);
 ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
 ssize_t my_write(struct file *file, char __user *user_buffer, size_t size, loff_t *offset);
 static long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
-
-extern const struct file_operations my_fops;
 
 #endif

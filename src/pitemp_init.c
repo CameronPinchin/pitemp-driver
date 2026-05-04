@@ -15,7 +15,7 @@ const struct file_operations my_fops = {
 
 struct temp_device_data devs[MY_MAX_MINORS];
 
-static int __init_tempdevice(void)
+static int init_tempdevice(void)
 {
     int err, i;
 
@@ -35,7 +35,7 @@ static int __init_tempdevice(void)
     return 0;
 }
 
-static void __cleanup_tempdevice(void)
+static void cleanup_tempdevice(void)
 {
     int i;
 
@@ -96,8 +96,8 @@ ssize_t my_write( struct file *file, char __user *user_buffer, size_t size, loff
 
 
 /* MACRO CALLS */
-module_init(__init_tempdevice);
-module_exit(__cleanup_tempdevice);
+module_init(init_tempdevice);
+module_exit(cleanup_tempdevice);
 
 MODULE_LICENSE(DRIVER_LICENSE);
 MODULE_AUTHOR(DRIVER_AUTHOR);
