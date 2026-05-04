@@ -7,12 +7,52 @@
  *          type: represents the magic number (unique identifier?)
  *            nr: represents the ioctl code for the device
  *          size: represents the size of the transferred data.
+ *  - examples of commands: setting buffer size, enabling or disabling the device, get current temperature, get device status, get error codes, etc
  */
+
+struct my_ioctl_data {
+    __u32 command;      // command being passed
+    __u32 size;         // size of the data being passed
+    __u64 data_ptr;     // pointer to the user-space buffer
+};
+
+// direction of data transfer relative to the kernel
+// i.e., MY_IOCTL_IN: user-space --> kernel-space
+
+/* IOCTL COMMANDS
+ *  CMD_SET_X --> id=1,dir=_IOC_WRITE
+ *  CMD_GET_X --> id=2,dir=_IOC_READ
+ */
+
+/* generic ideas, get_temp will stay. Probably not fans though, out of scope. */
+#define IOCTL_GET_TEMP _IOC(_IOC_READ, 'k', 1, sizeof(struct my_ioctl_data))
+#define IOCTL_GET_SPEED _IOC(_IOC_READ, 'k', 2, sizeof(struct my_ioctl_data))
 
 long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
-    // temp_device_data *my_data = (struct temp_device_data *)file->private_data;
-    // struct ---temp_ioctl_data mid;
+    struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
+    struct my_ioctl_data mid;
+
+    switch(cmd){
+        case IOCTL_GET_TEMP:
+            if( copy_from_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
+                return -EFAULT;
+            }
+
+            /* command runs successfully */
+            /*  process command here */
+            break;
+        case IOCTL_GET_SPEED:
+            if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
+                return -EFAULT;
+            }
+
+            /* command runs successfully */
+            /*  process command here */
+            break;
+        default:
+            return -ENOTTY;
+    }
 
     return 0;
 }

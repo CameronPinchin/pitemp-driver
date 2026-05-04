@@ -3,18 +3,21 @@
 struct temp_device_data {
     struct cdev cdev;
     char buffer[1024];          // unsure what to size
-    size_t size;           // likely change, provides 16-bits though
+    size_t size;                // likely change, provides 16-bits though
 };
 
 const struct file_operations my_fops = {
-    .owner          = THIS_MODULE,
-    .open           = my_open,
-    .read           = my_read
+    .owner              = THIS_MODULE,
+    .open               = my_open,
+    .release            = my_release,
+    .read               = my_read,
+    .write              = my_write,
+    .unlocked_ioctl     = my_ioctl
 };
 
 struct temp_device_data devs[MY_MAX_MINORS];
 
-int init_tempdevice(void)
+static int init_temperature_device(void)
 {
     int err, i;
 
@@ -34,7 +37,7 @@ int init_tempdevice(void)
     return 0;
 }
 
-void cleanup_tempdevice(void)
+static void cleanup_temperature_device(void)
 {
     int i;
 
@@ -51,11 +54,16 @@ void cleanup_tempdevice(void)
 int my_open(struct inode *inode, struct file *file)
 {
     struct temp_device_data *my_data;
-    
+
     my_data = container_of(inode->i_cdev, struct temp_device_data, cdev);
 
     file->private_data = my_data;
 
+    return 0;
+}
+
+int my_release(struct inode *inode, struct file *file)
+{
     return 0;
 }
 
@@ -70,22 +78,22 @@ ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t
     if (len <= 0)
         return 0;
 
-    // reads data from my_data->buffer to the user_buffer 
+    // reads data from my_data->buffer to the user_buffer
     if (copy_to_user(user_buffer, my_data->buffer + *offset, len) != 0)
         return -EFAULT;
-    
+
     *offset += len;
     return len;
 }
 
-ssize_t my_write( struct file *file, char __user *user_buffer, size_t size, loff_t * offset )
+ssize_t my_write( struct file *file, const char __user *user_buffer, size_t size, loff_t * offset )
 {
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
     ssize_t len = min_t(size_t, my_data->size - *offset, size);
 
     if (len <= 0)
         return 0;
-    
+
     if (copy_from_user(my_data->buffer + *offset, user_buffer, len) != 0)
         return -EFAULT;
 
@@ -95,8 +103,8 @@ ssize_t my_write( struct file *file, char __user *user_buffer, size_t size, loff
 
 
 /* MACRO CALLS */
-module_init(init_tempdevice);
-module_exit(cleanup_tempdevice);
+module_init(init_temperature_device);
+module_exit(cleanup_temperature_device);
 
 MODULE_LICENSE(DRIVER_LICENSE);
 MODULE_AUTHOR(DRIVER_AUTHOR);
