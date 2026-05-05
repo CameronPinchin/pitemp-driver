@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: GPL-2.0 */
 #include "pitemp.h"
 
 struct temp_device_data {

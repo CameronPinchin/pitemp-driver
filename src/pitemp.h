@@ -1,5 +1,6 @@
 #ifndef PITEMP_H
 #define PITEMP_H
+/* SPDX-License-Identifier: GPL-2.0 */
 
 #include <linux/module.h>           /* Needed by all modules */
 #include <linux/kernel.h>           /* Needed for KERN_INFO */
@@ -16,7 +17,7 @@
 #define MY_MAX_MINORS       5
 #define DRIVER_AUTHOR       "Cameron Pinchin<cwpinchin@outlook.com>"
 #define DRIVER_DESC         "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
-#define DRIVER_LICENSE      "MIT"
+#define DRIVER_LICENSE      "GPL"
 
 extern const struct file_operations my_fops;
 extern struct temp_device_data my_data;

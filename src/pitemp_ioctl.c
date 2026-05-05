@@ -1,4 +1,6 @@
+/* SPDX-License-Identifier: GPL-2.0 */
 #include "pitemp.h"
+
 /* ioctl, the ability to perform certain physical dev control tasks.
  *   - the values corresponding to cmd(s) must be chosen.
  *   - lots of ways to do this; pick consecutive numbers starting at 0
