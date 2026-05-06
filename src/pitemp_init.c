@@ -55,10 +55,15 @@ static void cleanup_temperature_device(void)
 int my_open(struct inode *inode, struct file *file)
 {
     struct temp_device_data *my_data;
+    int minor;
 
     my_data = container_of(inode->i_cdev, struct temp_device_data, cdev);
 
     file->private_data = my_data;
+
+    // initialize device
+    minor = iminor(inode);
+    printk(KERN_INFO "[RP1-IO] Minor for device is: %d\n", minor); 
 
     return 0;
 }
