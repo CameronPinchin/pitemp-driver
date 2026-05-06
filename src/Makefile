@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-2.0
 # Differs from usual format
 # Calls on the kernels build system instead of directly using gcc
 KERNEL_VERSION:=$(shell uname -r)

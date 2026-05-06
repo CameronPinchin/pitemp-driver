@@ -13,11 +13,14 @@
 #include <asm/uaccess.h>
 #include <asm/ioctl.h>
 
-#define MY_MAJOR            50
-#define MY_MAX_MINORS       5
-#define DRIVER_AUTHOR       "Cameron Pinchin<cwpinchin@outlook.com>"
-#define DRIVER_DESC         "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
-#define DRIVER_LICENSE      "GPL"
+#define MY_MAJOR                50
+#define MY_MAX_MINORS           5
+#define DRIVER_AUTHOR           "Cameron Pinchin<cwpinchin@outlook.com>"
+#define DRIVER_DESC             "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
+#define DRIVER_LICENSE          "GPL"
+
+#define RP1_ADC_PHY_ADDRESS     0x400c8000
+#define RP1_ADC_REGISTER        (*(volatile uint32_t *)RP!RP1_ADC_PHY_ADDRESS)
 
 extern const struct file_operations my_fops;
 extern struct temp_device_data my_data;

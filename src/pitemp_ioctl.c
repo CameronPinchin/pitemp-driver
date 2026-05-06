@@ -20,15 +20,24 @@ struct my_ioctl_data {
 
 // direction of data transfer relative to the kernel
 // i.e., MY_IOCTL_IN: user-space --> kernel-space
+//  ADC: Analog-digital-conveter --> addr: 0x400c8000
+// adc: bus type: apb, atomic access: y, addr: 0x400c8000
 
 /* IOCTL COMMANDS
  *  CMD_SET_X --> id=1,dir=_IOC_WRITE
  *  CMD_GET_X --> id=2,dir=_IOC_READ
  */
 
-/* generic ideas, get_temp will stay. Probably not fans though, out of scope. */
-#define IOCTL_GET_TEMP _IOC(_IOC_READ, 'k', 1, sizeof(struct my_ioctl_data))
-#define IOCTL_GET_SPEED _IOC(_IOC_READ, 'k', 2, sizeof(struct my_ioctl_data))
+/* commands. TO-DO: add this to header */
+// getters
+#define IOCTL_GET_TEMP              _IOC(_IOC_READ, 'k', 1, sizeof(struct my_ioctl_data))
+#define IOCTL_GET_SPEED             _IOC(_IOC_READ, 'k', 2, sizeof(struct my_ioctl_data))
+#define IOCTL_GET_ADC_REGISTER      _IOC(_IOC_READ, 'k', 3, sizeof(struct my_ioctl_data))
+// setters
+// fan speed is set with PWM, changing to a desired speed requires reading up on PWM
+//  - base the speeds on RPMs? I.e., if user wanted to increase the speed to max RPMs, change the PWM to its maximum (duty == 100)?
+//  - how would get this fan information?
+#define IOCTL_SET_SPEED _IOC(_IOC_WRITE, 'k', 10, sizeof(struct my_ioctl_data))
 
 long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
@@ -37,7 +46,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 
     switch(cmd){
         case IOCTL_GET_TEMP:
-            if( copy_from_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
+            if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
                 return -EFAULT;
             }
 
@@ -51,6 +60,13 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 
             /* command runs successfully */
             /*  process command here */
+            break;
+        case IOCTL_GET_ADC_REGISTER:
+            if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
+                return -EFAULT;
+            }
+            __u32 adc_value = RP1_ADC_REGISTER;
+            printk( KERN_INFO "[RP1-IO] ADC Register value: %u\n", adc_value);
             break;
         default:
             return -ENOTTY;
