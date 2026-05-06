@@ -67,7 +67,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             }
             __u32 adc_value = RP1_ADC_REGISTER;
             printk( KERN_INFO "[RP1-IO] ADC Register value: %u\n", adc_value);
-            break;
+            return 0;
         default:
             return -ENOTTY;
     }
