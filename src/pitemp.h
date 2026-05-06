@@ -20,7 +20,7 @@
 #define DRIVER_LICENSE          "GPL"
 
 #define RP1_ADC_PHY_ADDRESS     0x400c8000
-#define RP1_ADC_REGISTER        (*(volatile uint32_t *)RP!RP1_ADC_PHY_ADDRESS)
+#define RP1_ADC_REGISTER        (*(volatile __u32 *)RP1_ADC_PHY_ADDRESS)
 
 extern const struct file_operations my_fops;
 extern struct temp_device_data my_data;
