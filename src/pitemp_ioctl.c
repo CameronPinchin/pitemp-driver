@@ -43,7 +43,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
     struct my_ioctl_data mid;
-
+    printk(KERN_INFO "[RP1-IO] my_ioctl called.\n");
     switch(cmd){
         case IOCTL_GET_TEMP:
             if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
@@ -62,13 +62,14 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             /*  process command here */
             break;
         case IOCTL_GET_ADC_REGISTER:
+            __u32 adc_value = RP1_ADC_REGISTER;
+            printk( KERN_INFO "[RP1-IO] ADC Register value: %u\n", adc_value);
             if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
                 return -EFAULT;
             }
-            __u32 adc_value = RP1_ADC_REGISTER;
-            printk( KERN_INFO "[RP1-IO] ADC Register value: %u\n", adc_value);
             return 0;
         default:
+            printk(KERN_INFO "[RP1-IO] Default option.\n");
             return -ENOTTY;
     }
 
