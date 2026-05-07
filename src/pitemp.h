@@ -9,6 +9,7 @@
 #include <linux/fs.h>
 #include <linux/types.h>
 #include <linux/wait.h>
+#include <linux/io.h>
 
 #include <asm/uaccess.h>
 #include <asm/ioctl.h>
@@ -19,8 +20,25 @@
 #define DRIVER_DESC             "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
 #define DRIVER_LICENSE          "GPL"
 
-#define RP1_ADC_PHY_ADDRESS     0x400c8000
-#define RP1_ADC_REGISTER        (*(volatile __u32 *)RP1_ADC_PHY_ADDRESS)
+//#define RP1_ADC_PHY_ADDRESS     0x400c8000
+//#define ADC_BASE_ADDRESS        0x400c8000
+//#define RP1_ADC_REGISTER        (*(volatile __u32 *)RP1_ADC_PHY_ADDRESS)
+
+/* REGISTER-SPECIFIC INFORMATION */
+#define RP1_ADC_BASE_ADDRESS        0x400c8000
+
+// register offsets
+#define RP1_ADC_CS                  0x00
+#define RP1_ADC_RESULT              0x04
+#define RP1_ADC_FCS                 0x08
+#define RP1_ADC_FIFO                0x0c
+#define RP1_ADC_DIV                 0x10
+
+// hardware interrupts
+#define RP1_ADC_INTR                0x14
+#define RP1_ADC_INTE                0x18
+#define RP1_ADC_INTF                0x1c
+#define RP1_ADC_INTS                0x20
 
 extern const struct file_operations my_fops;
 extern struct temp_device_data my_data;

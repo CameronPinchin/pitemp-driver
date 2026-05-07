@@ -77,6 +77,12 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 
             return 0;
         default:
+            __u32 val;
+            void __iomem *v_addr;
+            unsigned long p_addr = ADC_BASE_ADDRESS;
+            v_addr = ioremap(p_addr, 4096); // 4kB page
+            val = readl(v_addr);
+            printk( KERN_INFO "[RP1-IO] DEBUGGING: Value: %d\n", val );
             return -ENOTTY;
     }
 
