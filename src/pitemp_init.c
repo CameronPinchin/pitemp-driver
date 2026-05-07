@@ -54,6 +54,7 @@ static void cleanup_temperature_device(void)
 /* Driver-side response to 'open' systemcall when used /dev/temp (?) */
 int my_open(struct inode *inode, struct file *file)
 {
+    printk(KERN_INFO "[RP1-IO] Debugging: my_open() called.\n");
     struct temp_device_data *my_data;
     int minor;
 

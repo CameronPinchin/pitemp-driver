@@ -28,6 +28,13 @@ struct my_ioctl_data {
  *  CMD_GET_X --> id=2,dir=_IOC_READ
  */
 
+ /*
+ struct my_pwm_priv{
+    void __iomem *base_addr;
+    struct pwm_chip chip;
+ }
+ */
+
 /* commands. TO-DO: add this to header */
 // getters
 #define IOCTL_GET_TEMP              _IOC(_IOC_READ, 'k', 1, sizeof(struct my_ioctl_data))
