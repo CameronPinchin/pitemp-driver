@@ -7,4 +7,8 @@ Linux kernel driver for interaction with the ADC peripheral on the RP1 IO contro
 
 The creation of this driver was primarily for learning purposes to explore low-level MMIO-based perihperal access, including physical-to-virtual memory mapping with ioremap(), register access using readl(), and interaction with RP1 peripheral register blocks from kernel space.
 
-Generally speaking, this is developed as a learning project to gather experience with Linux kernel development, and hardware register interfacing.
+Generally speaking, this is developed as a learning project to gather experience with Linux kernel development, and hardware register interfacing. I will be adding some documentation for the sake of complete-ness.
+
+Scratch Notes:
+
+This is my introduction to Linux drivers. Initially, I wanted to create a driver for the temperature sensor on the RPi5, but got side-tracked and interested in the RP1 chip. When starting, I was wording it as if I was creating the driver for the entire RP1 chip. The more understanding I gathered through reading the RP1's datasheet let me dial in the scope of the project to specifically the Analog-to-Digital converter on the RP1 chip itself.

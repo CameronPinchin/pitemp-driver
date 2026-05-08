@@ -55,6 +55,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
     struct my_ioctl_data mid;
     __u32 val;
+    
     switch(cmd){
         case IOCTL_GET_ADC_SAMPLE_RATE:
             read_register(&val, RP1_ADC_DIV);
