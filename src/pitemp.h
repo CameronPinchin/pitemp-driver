@@ -25,14 +25,14 @@
 /* REGISTER-SPECIFIC INFORMATION */
 #define RP1_ADC_BASE_ADDRESS        ((phys_addr_t)0x1f000c8000ULL)  /* 0x400c8000 */
 
-#define RP1_ADC_MAP_SIZE            ((size_t)0x4000) // defined in the device tree
+#define RP1_ADC_MAP_SIZE            ((size_t)0x4000) // 16 kB 
 
 // register offsets
-#define RP1_ADC_CS                  0x00
-#define RP1_ADC_RESULT              0x04
-#define RP1_ADC_FCS                 0x08
-#define RP1_ADC_FIFO                0x0c
-#define RP1_ADC_DIV                 0x10
+#define RP1_ADC_CS                  0x00    /* Control and Status register */
+#define RP1_ADC_RESULT              0x04    /* Result register */
+#define RP1_ADC_FCS                 0x08    /* Frame Check Sequence register */
+#define RP1_ADC_FIFO                0x0c    /* First-In-First-Out register (used for temp data) */
+#define RP1_ADC_DIV                 0x10    /* Clock Divider register */
 
 // hardware interrupts
 #define RP1_ADC_INTR                0x14

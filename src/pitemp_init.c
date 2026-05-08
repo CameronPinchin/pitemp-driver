@@ -56,17 +56,20 @@ int my_open(struct inode *inode, struct file *file)
 {
     printk(KERN_INFO "[RP1-IO] Debugging: my_open() called.\n");
     struct temp_device_data *my_data;
-    int minor;
+    int minor = iminor(inode);
+
+    if (minor >= MY_MAX_MINORS) {
+        printk( KERN_ERR "[RP1-ADC] Error: Minor %d out of range.\n", minor);
+        return -ENODEV;
+    }
 
     my_data = container_of(inode->i_cdev, struct temp_device_data, cdev);
-
     file->private_data = my_data;
 
     // initialize device
-    minor = iminor(inode);
     printk(KERN_INFO "[RP1-IO] Minor for device is: %d\n", minor); 
 
-    return 0;
+    return 0; // success status 
 }
 
 int my_release(struct inode *inode, struct file *file)
@@ -79,8 +82,6 @@ ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t
 {
     struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
     ssize_t len = min_t(size_t, my_data->size - *offset, size); // length of the data (?)
-    // signedness issue
-    // size_t size: (unsigned), loff_t * offset (signed), int16_t size: signed
 
     if (len <= 0)
         return 0;
