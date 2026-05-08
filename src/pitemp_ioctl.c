@@ -1,22 +1,11 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include "pitemp.h"
 
-/* ioctl, the ability to perform certain physical dev control tasks.
- *   - the values corresponding to cmd(s) must be chosen.
- *   - lots of ways to do this; pick consecutive numbers starting at 0
- *   - recommended, however, to use the macro: _IOC(dir, type, nr, size)
- *           dir: represents the data transfer (_IOC_NONE, _IOC_READ, _IOC_WRITE)
- *          type: represents the magic number (unique identifier?)
- *            nr: represents the ioctl code for the device
- *          size: represents the size of the transferred data.
- *  - examples of commands: setting buffer size, enabling or disabling the device, get current temperature, get device status, get error codes, etc
- */
-
 struct my_ioctl_data {
     __u32 command;          // command being passed
     __u32 size;             // size of the data being passed
-    __u64 large_data;   // pointer to the user-space buffer
-    __u32 small_data;   //  unsure if this is a good idea to split it up like this
+    __u64 large_data;       // pointer to the user-space buffer
+    __u32 small_data;       //  unsure if this is a good idea to split it up like this
 };
 
 struct rp1_adc_snapshot {
@@ -27,36 +16,10 @@ struct rp1_adc_snapshot {
     __u32 fifo;
 };
 
-// direction of data transfer relative to the kernel
-// i.e., MY_IOCTL_IN: user-space --> kernel-space
-//  ADC: Analog-digital-conveter --> addr: 0x400c8000
-// adc: bus type: apb, atomic access: y, addr: 0x400c8000
-
-/* IOCTL COMMANDS
- *  CMD_SET_X --> id=1,dir=_IOC_WRITE
- *  CMD_GET_X --> id=2,dir=_IOC_READ
- */
-
- /*
- struct my_pwm_priv{
-    void __iomem *base_addr;
-    struct pwm_chip chip;
- }
- */
-
-/* commands. TO-DO: add this to header */
-// getters
-
 #define IOCTL_GET_ADC_SAMPLE_RATE   _IOR('k', 1, struct my_ioctl_data)
 #define IOCTL_GET_ADC_REGISTER      _IOR('k', 2, struct my_ioctl_data)
 #define IOCTL_GET_ADC_CS            _IOR('k', 3, struct my_ioctl_data)
 #define IOCTL_GET_ADC_SNAPSHOT      _IOR('k', 4, struct rp1_adc_snapshot)
-
-// setters
-// fan speed is set with PWM, changing to a desired speed requires reading up on PWM
-//  - base the speeds on RPMs? I.e., if user wanted to increase the speed to max RPMs, change the PWM to its maximum (duty == 100)?
-//  - how would get this fan information?
-#define IOCTL_SET_SPEED _IOW('k', 10, sizeof(struct my_ioctl_data))
 
 static void fill_ioctl_data_struct(struct my_ioctl_data * data, __u32 cmd, __u32 size, __u64 large_data, __u32 small_data)
 {

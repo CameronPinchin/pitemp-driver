@@ -4,7 +4,7 @@
 struct temp_device_data {
     struct cdev cdev;
     char buffer[1024];          // unsure what to size
-    size_t size;                // likely change, provides 16-bits though
+    size_t size;                
 };
 
 const struct file_operations my_fops = {
@@ -86,7 +86,6 @@ ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t
     if (len <= 0)
         return 0;
 
-    // reads data from my_data->buffer to the user_buffer
     if (copy_to_user(user_buffer, my_data->buffer + *offset, len) != 0)
         return -EFAULT;
 
