@@ -1,20 +1,10 @@
-** There is already an exposed interface for this via /sys/thermal*(?)
-**  This is for praciting genuine driver development
+RP1 ADC Linux Driver
+ - Intended for learning purposes and as a project of interest.
 
-Linux Driver for the temperature sensor on the Raspberry Pi 5.
- - Idea is to practice driver development, experience with kernel space vs userspace.
- - Port this to a QNX Resource Manager
+Description:
 
-Linux Driver: pitemp.so (? maybe change the name)
+Linux kernel driver for interaction with the ADC peripheral on the RP1 IO controller.
 
-Resources:
+The creation of this driver was primarily for learning purposes to explore low-level MMIO-based perihperal access, including physical-to-virtual memory mapping with ioremap(), register access using readl(), and interaction with RP1 peripheral register blocks from kernel space.
 
-BCM2712 Datasheet
-
-RP1 Datasheet
-https://pip-assets.raspberrypi.com/categories/892-raspberry-pi-5/documents/RP-008370-DS-1-rp1-peripherals.pdf?disposition=inline
-
-Initial understanding:
-- I want to be targetting the RP1 I/O controller
-- Specifically, contains a "12-bit ADC with temperature sensor"
-- It would be a character device, since the data transfers would be small and infrequent
+Generally speaking, this is developed as a learning project to gather experience with Linux kernel development, and hardware register interfacing.
