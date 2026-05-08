@@ -14,18 +14,18 @@
 #include <asm/uaccess.h>
 #include <asm/ioctl.h>
 
-#define MY_MAJOR                50
-#define MY_MAX_MINORS           5
-#define DRIVER_AUTHOR           "Cameron Pinchin<cwpinchin@outlook.com>"
-#define DRIVER_DESC             "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
-#define DRIVER_LICENSE          "GPL"
+#define MY_MAJOR                    50
+#define MY_MAX_MINORS               5
+#define DRIVER_AUTHOR               "Cameron Pinchin<cwpinchin@outlook.com>"
+#define DRIVER_DESC                 "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
+#define DRIVER_LICENSE              "GPL"
 
-//#define RP1_ADC_PHY_ADDRESS     0x400c8000
-//#define ADC_BASE_ADDRESS        0x400c8000
-//#define RP1_ADC_REGISTER        (*(volatile __u32 *)RP1_ADC_PHY_ADDRESS)
+// this information can be found in the device-tree for the RP1 
 
 /* REGISTER-SPECIFIC INFORMATION */
-#define RP1_ADC_BASE_ADDRESS        0x400c8000
+#define RP1_ADC_BASE_ADDRESS        ((phys_addr_t)0x1f000c8000ULL)  /* 0x400c8000 */
+
+#define RP1_ADC_MAP_SIZE            ((size_t)0x4000) // defined in the device tree
 
 // register offsets
 #define RP1_ADC_CS                  0x00

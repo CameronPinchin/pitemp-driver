@@ -69,20 +69,23 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             /*  process command here */
             break;
         case IOCTL_GET_ADC_REGISTER:
+            printk( KERN_INFO "IOCTL_GET_ADC_REGISTER COMMAND CALLED.\n" );
             if( copy_to_user(&mid, (struct my_ioctl_data *) arg, sizeof(struct my_ioctl_data)) != 0 ){
                 return -EFAULT;
             }
-            //  __u32 adc_value = RP1_ADC_REGISTER;
-            // THE TESTING FAILS DUE TO A BAD OPEN CALL 
+            /* THIS WORKS!!!!!! */
+            __u32 val;
+            // from my understanding, ioremap() allows the kernel access to a memory address by mapping it to a virtual one
+            void __iomem *v_addr = ioremap(RP1_ADC_BASE_ADDRESS, RP1_ADC_MAP_SIZE);
+            if(!v_addr){
+                printk( KERN_INFO "[RP1-ADC] V_addr is NULL, ioremap() failed.\n");
+                return -ENOMEM;
+            }
+            val = readl(v_addr + RP1_ADC_RESULT);
+            printk( KERN_INFO "[RP1-IO] DEBUGGING: Value: %d\n", val );
 
             return 0;
         default:
-            __u32 val;
-            void __iomem *v_addr;
-            unsigned long p_addr = ADC_BASE_ADDRESS;
-            v_addr = ioremap(p_addr, 4096); // 4kB page
-            val = readl(v_addr);
-            printk( KERN_INFO "[RP1-IO] DEBUGGING: Value: %d\n", val );
             return -ENOTTY;
     }
 
