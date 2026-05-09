@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#include "pitemp.h"
+#include "rp1_adc.h"
 
 struct temp_device_data {
     struct cdev cdev;
@@ -22,11 +22,11 @@ static int init_temperature_device(void)
 {
     int err, i;
 
-    printk(KERN_INFO "[RP1-IO] Initializing %d RP1-IO temperature sensor devices.\n", MY_MAX_MINORS);
+    printk(KERN_INFO "[RP1-IO] Initializing %d RP1 ADC devices.\n", MY_MAX_MINORS);
 
-    err = register_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 Temperature Sensor driver");
+    err = register_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 ADC Driver");
     if (err != 0) {
-        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 temperature sensor.\n");
+        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 ADC driver.\n");
         return err;
     }
 
@@ -42,7 +42,7 @@ static void cleanup_temperature_device(void)
 {
     int i;
 
-    printk( KERN_INFO "[RP1-IO] Cleaning up %d RP1-IO temperature sensor devices.\n", MY_MAX_MINORS);
+    printk( KERN_INFO "[RP1-IO] Cleaning up %d RP1 ADC devices.\n", MY_MAX_MINORS);
 
     for(i = 0; i < MY_MAX_MINORS; i++) {
         cdev_del(&devs[i].cdev);

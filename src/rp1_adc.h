@@ -1,5 +1,5 @@
-#ifndef PITEMP_H
-#define PITEMP_H
+#ifndef RP1_ADC_H
+#define RP1_ADC_H
 /* SPDX-License-Identifier: GPL-2.0 */
 
 #include <linux/module.h>           /* Needed by all modules */

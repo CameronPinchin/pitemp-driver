@@ -12,3 +12,28 @@ Generally speaking, this is developed as a learning project to gather experience
 Scratch Notes:
 
 This is my introduction to Linux drivers. Initially, I wanted to create a driver for the temperature sensor on the RPi5, but got side-tracked and interested in the RP1 chip. When starting, I was wording it as if I was creating the driver for the entire RP1 chip. The more understanding I gathered through reading the RP1's datasheet let me dial in the scope of the project to specifically the Analog-to-Digital converter on the RP1 chip itself.
+
+INSTRUCTIONS:
+
+BUILDING: CLI Instructions
+
+1. Navigate to the projects src directory:
+    # cd ${PROJECT_WORKING_DIR}/src
+
+2. Build with the provided Makefile:
+    # make all
+
+LOADING: CLI Instructions
+
+1. Navigate to the projects src directory:
+    # cd ${PROJECT_WORKING_DIR}/src
+
+2. Load the module using insmod, requires sudo priviliges
+    # insmod pitemp.ko
+
+TO-DOs:
+
+- Need to make the /dev/<adc_device> file creation and MAJ:MIN assignment automatic.
+- Need to figure out what an actual finished product looks like for a driver
+    - i.e., I spread this out across multiple files, but looking into the Linux source it seems drivers often are just one .c file. I guess more files just adds needless overhead and complexity?
+

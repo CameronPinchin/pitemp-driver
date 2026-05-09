@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#include "pitemp.h"
+#include "rp1_adc.h"
 
 struct my_ioctl_data {
     __u32 command;          // command being passed
