@@ -40,6 +40,12 @@
 #define RP1_ADC_INTF                0x1c
 #define RP1_ADC_INTS                0x20
 
+// ioctl commands
+#define IOCTL_GET_ADC_SAMPLE_RATE   _IOR('k', 1, struct my_ioctl_data)
+#define IOCTL_GET_ADC_REGISTER      _IOR('k', 2, struct my_ioctl_data)
+#define IOCTL_GET_ADC_CS            _IOR('k', 3, struct my_ioctl_data)
+#define IOCTL_GET_ADC_SNAPSHOT      _IOR('k', 4, struct rp1_adc_snapshot)
+
 extern const struct file_operations my_fops;
 extern struct temp_device_data my_data;
 extern struct my_ioctl_data mid;
