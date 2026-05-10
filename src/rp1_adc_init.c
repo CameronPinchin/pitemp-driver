@@ -1,5 +1,12 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#include "rp1_adc.h"
+#include "../include/rp1_adc.h"
+
+#include <linux/module.h>           /* Needed by all modules */
+#include <linux/kernel.h>           /* Needed for KERN_INFO */
+#include <linux/init.h>
+#include <linux/cdev.h>
+#include <linux/fs.h>
+#include <linux/types.h>
 
 struct temp_device_data {
     struct cdev cdev;

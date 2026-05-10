@@ -1,6 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include "../include/rp1_adc.h"
 
+#include <asm/uaccess.h>
+#include <asm/ioctl.h>
+#include <linux/io.h>
+
 struct my_ioctl_data {
     __u32 command;          // command being passed
     __u32 size;             // size of the data being passed
