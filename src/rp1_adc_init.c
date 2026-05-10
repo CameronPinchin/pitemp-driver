@@ -8,8 +8,8 @@
 #include <linux/types.h>
 
 #define DRIVER_AUTHOR               "Cameron Pinchin<cwpinchin@outlook.com>"
-#define DRIVER_DESC                 "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
-#define DRIVER_LICENSE              "GPL"
+#define DRIVER_DESC                 "Driver for the analog-to-digital converter on the RP1 chip."
+#define DRIVER_LICENSE              "GPL-2.0"
 #define MY_MAJOR                    50
 #define MY_MAX_MINORS               5
 
@@ -63,7 +63,6 @@ static void cleanup_temperature_device(void)
     unregister_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS);
 }
 
-/* Driver-side response to 'open' systemcall when used /dev/temp (?) */
 int my_open(struct inode *inode, struct file *file)
 {
     struct rp1_adc_data *my_data;
@@ -77,7 +76,7 @@ int my_open(struct inode *inode, struct file *file)
     my_data = container_of(inode->i_cdev, struct rp1_adc_data, cdev);
     file->private_data = my_data;
 
-    return 0; // success status 
+    return 0;
 }
 
 int my_release(struct inode *inode, struct file *file)
@@ -92,7 +91,6 @@ int my_release(struct inode *inode, struct file *file)
     return 0;
 }
 
-/* Driver-side response to 'read(int fd, void buf[], size_t cnt)' systemcall when used /dev/temp (?) */
 ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t * offset)
 {
     struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;

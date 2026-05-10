@@ -5,10 +5,9 @@
 #include <linux/io.h>
 
 struct my_ioctl_data {
-    __u32 command;          // command being passed
-    __u32 size;             // size of the data being passed
-    __u64 large_data;       // pointer to the user-space buffer
-    __u32 small_data;       //  unsure if this is a good idea to split it up like this
+    __u32 command;
+    __u32 size;
+    __u32 data;
 };
 
 struct rp1_adc_snapshot {
@@ -19,12 +18,11 @@ struct rp1_adc_snapshot {
     __u32 fifo;
 };
 
-static void fill_ioctl_data_struct(struct my_ioctl_data * data, __u32 cmd, __u32 size, __u64 large_data, __u32 small_data)
+static void fill_ioctl_data_struct(struct my_ioctl_data * data, __u32 cmd, __u32 size, __u32 data)
 {
     data->command=cmd;
     data->size=size;
-    data->large_data=large_data;
-    data->small_data=small_data;
+    data->data=data;
 }
 
 static __u32 get_sample_rate(__u32 val)
@@ -81,7 +79,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
         case IOCTL_GET_ADC_SAMPLE_RATE:
             ret = read_register(&val, RP1_ADC_DIV);
             val = get_sample_rate(val);
-            fill_ioctl_data_struct(&mid, cmd, sizeof(val), -1, val);
+            fill_ioctl_data_struct(&mid, cmd, sizeof(val), val);
 
             if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
                 return -EFAULT;
@@ -90,7 +88,34 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             return 0;
         case IOCTL_GET_ADC_CS:
             ret = read_register(&val, RP1_ADC_CS);
-            fill_ioctl_data_struct(&mid, cmd, sizeof(val), -1, val);
+            fill_ioctl_data_struct(&mid, cmd, sizeof(val), val);
+
+            if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
+                return -EFAULT;
+            }
+
+            return 0;
+        case IOCTL_GET_ADC_RESULT:
+            ret = read_register(&val, RP1_ADC_RESULT);
+            fill_ioctl_data_struct(&mid, cmd, sizeof(val), val);
+
+            if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
+                return -EFAULT;
+            }
+
+            return 0;
+        case IOCTL_GET_ADC_FCS:
+            ret = read_register(&val, RP1_ADC_FCS);
+            fill_ioctl_data_struct(&mid, cmd, sizeof(val), val);
+
+            if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
+                return -EFAULT;
+            }
+
+            return 0;
+        case IOCTL_GET_ADC_FIFO:
+            ret = read_register(&val, RP1_ADC_FIFO);
+            fill_ioctl_data_struct(&mid, cmd, sizeof(val), val);
 
             if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
                 return -EFAULT;
