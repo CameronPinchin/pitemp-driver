@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include "../include/rp1_adc.h"
-
 #include <linux/module.h>           /* Needed by all modules */
 #include <linux/kernel.h>           /* Needed for KERN_INFO */
 #include <linux/init.h>
@@ -10,7 +9,7 @@
 
 struct temp_device_data {
     struct cdev cdev;
-    char buffer[1024];          // unsure what to size
+    char buffer[1024]; 
     size_t size;                
 };
 

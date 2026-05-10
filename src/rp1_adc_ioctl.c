@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include "../include/rp1_adc.h"
-
 #include <asm/uaccess.h>
 #include <asm/ioctl.h>
 #include <linux/io.h>
