@@ -71,8 +71,9 @@ static int rp1_adc_get_snapshot(struct rp1_adc_snapshot* snap)
 
 long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
-    struct temp_device_data *my_data = (struct temp_device_data *)file->private_data;
+    struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
     struct my_ioctl_data mid;
+    struct rp1_adc_snapshot snap;
     __u32 val;
     int ret;
 
@@ -82,7 +83,7 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             val = get_sample_rate(val);
             fill_ioctl_data_struct(&mid, cmd, sizeof(val), -1, val);
 
-            if( copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0 ){
+            if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
                 return -EFAULT;
             }
 
@@ -91,24 +92,20 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             ret = read_register(&val, RP1_ADC_CS);
             fill_ioctl_data_struct(&mid, cmd, sizeof(val), -1, val);
 
-            if( copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0 ){
+            if(copy_to_user((struct my_ioctl_data *) arg, &mid, sizeof(mid)) != 0){
                 return -EFAULT;
             }
 
             return 0;
         case IOCTL_GET_ADC_SNAPSHOT:
-            struct rp1_adc_snapshot snap;
             ret = rp1_adc_get_snapshot(&snap);
 
-            if( copy_to_user((struct rp1_adc_snapshot *) arg, &snap, sizeof(snap)) != 0 ){
+            if(copy_to_user((struct rp1_adc_snapshot *) arg, &snap, sizeof(snap)) != 0){
                 return -EFAULT;
             }
 
             return 0;
         default:
-            /* TO-DO: 
-             *  - Should the default case give more information?
-             */
             return -ENOTTY;
         
     }

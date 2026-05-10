@@ -1,15 +1,9 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef RP1_ADC_H
 #define RP1_ADC_H
-
-#define MY_MAJOR                    50
-#define MY_MAX_MINORS               5
-#define DRIVER_AUTHOR               "Cameron Pinchin<cwpinchin@outlook.com>"
-#define DRIVER_DESC                 "Character driver for the templerature sensor on board the RP1 I/O Controller found on RPi5 devices."
-#define DRIVER_LICENSE              "GPL"
-/* REGISTER-SPECIFIC INFORMATION */
+// ADC block information
 #define RP1_ADC_BASE_ADDRESS        ((phys_addr_t)0x1f000c8000ULL) 
-#define RP1_ADC_MAP_SIZE            ((size_t)0x4000) // 16 kB 
+#define RP1_ADC_MAP_SIZE            ((size_t)0x4000) 
 // register offsets
 #define RP1_ADC_CS                  0x00    /* Control and Status register */
 #define RP1_ADC_RESULT              0x04    /* Result register */
@@ -28,7 +22,7 @@
 #define IOCTL_GET_ADC_SNAPSHOT      _IOR('k', 4, struct rp1_adc_snapshot)
 
 extern const struct file_operations my_fops;
-extern struct temp_device_data my_data;
+extern struct rp1_adc_data my_data;
 extern struct my_ioctl_data mid;
 
 int my_open(struct inode *, struct file *);
