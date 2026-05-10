@@ -35,7 +35,6 @@ static int read_register(__u32* val, size_t offset)
 
     void __iomem *v_addr = ioremap(RP1_ADC_BASE_ADDRESS, RP1_ADC_MAP_SIZE);
     if(!v_addr){
-        printk( KERN_ERR "[RP1-ADC] v_addr is undefined, ioremap failure.\n");
         return -ENOMEM;
     }
     *val = readl(v_addr + offset);
@@ -50,7 +49,6 @@ static int rp1_adc_get_snapshot(struct rp1_adc_snapshot* snap)
     void __iomem *v_addr = ioremap(RP1_ADC_BASE_ADDRESS, RP1_ADC_MAP_SIZE);
 
     if(!v_addr){
-        printk( KERN_ERR "[RP1-ADC] v_addr is undefined, ioremap failure.\n");
         return -ENOMEM;
     }
 

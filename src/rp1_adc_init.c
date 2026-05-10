@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #include "../include/rp1_adc.h"
-#include <linux/module.h>           /* Needed by all modules */
-#include <linux/kernel.h>           /* Needed for KERN_INFO */
+#include <linux/module.h>
+#include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/cdev.h>
 #include <linux/fs.h>
@@ -34,11 +34,8 @@ static int rp1_adc_init(void)
 {
     int err, i;
 
-    printk(KERN_INFO "[RP1-IO] Initializing %d RP1 ADC devices.\n", MY_MAX_MINORS);
-
     err = register_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS, "RP1 ADC Driver");
     if (err != 0) {
-        printk(KERN_INFO "[RP1-IO] Error occurred, could not initialize driver for RP1 ADC driver.\n");
         return err;
     }
 
@@ -54,8 +51,6 @@ static void rp1_adc_cleanup(void)
 {
     int i;
 
-    printk( KERN_INFO "[RP1-ADC] Cleaning up %d RP1 ADC devices.\n", MY_MAX_MINORS);
-
     for(i = 0; i < MY_MAX_MINORS; i++) {
         cdev_del(&devs[i].cdev);
     }
@@ -69,7 +64,6 @@ int rp1_adc_open(struct inode *inode, struct file *file)
     int minor = iminor(inode);
 
     if (minor >= MY_MAX_MINORS) {
-        printk( KERN_ERR "[RP1-ADC] Error: Minor %d out of range.\n", minor);
         return -ENODEV;
     }
 
@@ -81,7 +75,7 @@ int rp1_adc_open(struct inode *inode, struct file *file)
 
 int rp1_adc_release(struct inode *inode, struct file *file)
 {
-    struct rp1_adc_data *my_data;
+    struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
     int minor = iminor(inode);
 
     if(minor == 1) {
@@ -94,7 +88,7 @@ int rp1_adc_release(struct inode *inode, struct file *file)
 ssize_t rp1_adc_read(struct file *file, char __user *user_buffer, size_t size, loff_t * offset)
 {
     struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
-    ssize_t len = min_t(size_t, my_data->size - *offset, size); // length of the data (?)
+    ssize_t len = min_t(size_t, my_data->size - *offset, size);
 
     if (len <= 0)
         return 0;
