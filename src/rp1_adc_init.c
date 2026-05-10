@@ -21,16 +21,16 @@ struct rp1_adc_data {
 
 const struct file_operations my_fops = {
     .owner              = THIS_MODULE,
-    .open               = my_open,
-    .release            = my_release,
-    .read               = my_read,
-    .write              = my_write,
-    .unlocked_ioctl     = my_ioctl
+    .open               = rp1_adc_open,
+    .release            = rp1_adc_release,
+    .read               = rp1_adc_read,
+    .write              = rp1_adc_write,
+    .unlocked_ioctl     = rp1_adc_ioctl
 };
 
 struct rp1_adc_data devs[MY_MAX_MINORS];
 
-static int init_temperature_device(void)
+static int rp1_adc_init(void)
 {
     int err, i;
 
@@ -50,7 +50,7 @@ static int init_temperature_device(void)
     return 0;
 }
 
-static void cleanup_temperature_device(void)
+static void rp1_adc_cleanup(void)
 {
     int i;
 
@@ -63,7 +63,7 @@ static void cleanup_temperature_device(void)
     unregister_chrdev_region(MKDEV(MY_MAJOR, 0), MY_MAX_MINORS);
 }
 
-int my_open(struct inode *inode, struct file *file)
+int rp1_adc_open(struct inode *inode, struct file *file)
 {
     struct rp1_adc_data *my_data;
     int minor = iminor(inode);
@@ -79,7 +79,7 @@ int my_open(struct inode *inode, struct file *file)
     return 0;
 }
 
-int my_release(struct inode *inode, struct file *file)
+int rp1_adc_release(struct inode *inode, struct file *file)
 {
     struct rp1_adc_data *my_data;
     int minor = iminor(inode);
@@ -91,7 +91,7 @@ int my_release(struct inode *inode, struct file *file)
     return 0;
 }
 
-ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t * offset)
+ssize_t rp1_adc_read(struct file *file, char __user *user_buffer, size_t size, loff_t * offset)
 {
     struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
     ssize_t len = min_t(size_t, my_data->size - *offset, size); // length of the data (?)
@@ -106,7 +106,7 @@ ssize_t my_read(struct file *file, char __user *user_buffer, size_t size, loff_t
     return len;
 }
 
-ssize_t my_write( struct file *file, const char __user *user_buffer, size_t size, loff_t * offset )
+ssize_t rp1_adc_write( struct file *file, const char __user *user_buffer, size_t size, loff_t * offset )
 {
     struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
     ssize_t len = min_t(size_t, my_data->size - *offset, size);
@@ -121,10 +121,9 @@ ssize_t my_write( struct file *file, const char __user *user_buffer, size_t size
     return len;
 }
 
-
 /* MACRO CALLS */
-module_init(init_temperature_device);
-module_exit(cleanup_temperature_device);
+module_init(rp1_adc_init);
+module_exit(rp1_adc_cleanup);
 
 MODULE_LICENSE(DRIVER_LICENSE);
 MODULE_AUTHOR(DRIVER_AUTHOR);

@@ -31,10 +31,10 @@ extern const struct file_operations my_fops;
 extern struct rp1_adc_data my_data;
 extern struct my_ioctl_data mid;
 
-int my_open(struct inode *, struct file *);
-int my_release(struct inode *, struct file *);
-ssize_t my_read(struct file *file, char *, size_t size, loff_t *offset);
-ssize_t my_write(struct file *file, const char *, size_t size, loff_t *offset);
-long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
+int rp1_adc_open(struct inode *, struct file *);
+int rp1_adc_release(struct inode *, struct file *);
+ssize_t rp1_adc_read(struct file *file, char *, size_t size, loff_t *offset);
+ssize_t rp1_adc_write(struct file *file, const char *, size_t size, loff_t *offset);
+long rp1_adc_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
 
 #endif

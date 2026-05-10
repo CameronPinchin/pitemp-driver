@@ -35,14 +35,14 @@ static int read_register(__u32* val, size_t offset)
 
     void __iomem *v_addr = ioremap(RP1_ADC_BASE_ADDRESS, RP1_ADC_MAP_SIZE);
     if(!v_addr){
-        printk( KERN_ERR "[RP1-ADC] V_addr is NULL, ioremap() failed.\n");
+        printk( KERN_ERR "[RP1-ADC] v_addr is undefined, ioremap failure.\n");
         return -ENOMEM;
     }
     *val = readl(v_addr + offset);
 
     iounmap(v_addr);
 
-    return 0; // success
+    return 0;
 }
 
 static int rp1_adc_get_snapshot(struct rp1_adc_snapshot* snap)
@@ -50,7 +50,7 @@ static int rp1_adc_get_snapshot(struct rp1_adc_snapshot* snap)
     void __iomem *v_addr = ioremap(RP1_ADC_BASE_ADDRESS, RP1_ADC_MAP_SIZE);
 
     if(!v_addr){
-        printk( KERN_ERR "[RP1-ADC] V_addr is NULL, ioremap() failed.\n");
+        printk( KERN_ERR "[RP1-ADC] v_addr is undefined, ioremap failure.\n");
         return -ENOMEM;
     }
 
@@ -62,10 +62,10 @@ static int rp1_adc_get_snapshot(struct rp1_adc_snapshot* snap)
 
     iounmap(v_addr);
 
-    return 0; // success
+    return 0;
 }
 
-long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+long rp1_adc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
     struct rp1_adc_data *my_data = (struct rp1_adc_data *)file->private_data;
     struct my_ioctl_data mid;
@@ -130,7 +130,6 @@ long my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
             return 0;
         default:
             return -ENOTTY;
-        
     }
 
     return 0;

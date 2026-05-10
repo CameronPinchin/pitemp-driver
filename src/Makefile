@@ -1,12 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0
-# Differs from usual format
-# Calls on the kernels build system instead of directly using gcc
 KERNEL_VERSION:=$(shell uname -r)
 
-# ccflags-y --> adds compiler flags
-
 obj-m += rp1_adc_custom.o
-rp1_adc-objs := rp1_adc_init.o rp1_adc_ioctl.o
+rp1_adc_custom-objs := rp1_adc_init.o rp1_adc_ioctl.o
 
 all:
 	make -C /lib/modules/$(KERNEL_VERSION)/build M=$(PWD) modules
