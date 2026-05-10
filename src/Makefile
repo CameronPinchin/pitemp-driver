@@ -5,7 +5,7 @@ KERNEL_VERSION:=$(shell uname -r)
 
 # ccflags-y --> adds compiler flags
 
-obj-m += rp1_adc.o
+obj-m += rp1_adc_custom.o
 rp1_adc-objs := rp1_adc_init.o rp1_adc_ioctl.o
 
 all:

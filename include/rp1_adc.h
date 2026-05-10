@@ -5,7 +5,6 @@
 #include <linux/ioctl.h>
 #include <linux/types.h>
 #include <linux/fs.h>
-
 // ADC block information
 #define RP1_ADC_BASE_ADDRESS        ((phys_addr_t)0x1f000c8000ULL) 
 #define RP1_ADC_MAP_SIZE            ((size_t)0x4000) 
