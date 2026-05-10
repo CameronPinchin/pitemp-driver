@@ -9,7 +9,7 @@
 
 #define DRIVER_AUTHOR               "Cameron Pinchin<cwpinchin@outlook.com>"
 #define DRIVER_DESC                 "Driver for the analog-to-digital converter on the RP1 chip."
-#define DRIVER_LICENSE              "GPL-2.0"
+#define DRIVER_LICENSE              "GPL"
 #define MY_MAJOR                    50
 #define MY_MAX_MINORS               5
 
