@@ -42,7 +42,7 @@ static void cleanup_temperature_device(void)
 {
     int i;
 
-    printk( KERN_INFO "[RP1-IO] Cleaning up %d RP1 ADC devices.\n", MY_MAX_MINORS);
+    printk( KERN_INFO "[RP1-ADC] Cleaning up %d RP1 ADC devices.\n", MY_MAX_MINORS);
 
     for(i = 0; i < MY_MAX_MINORS; i++) {
         cdev_del(&devs[i].cdev);
@@ -54,7 +54,6 @@ static void cleanup_temperature_device(void)
 /* Driver-side response to 'open' systemcall when used /dev/temp (?) */
 int my_open(struct inode *inode, struct file *file)
 {
-    printk(KERN_INFO "[RP1-IO] Debugging: my_open() called.\n");
     struct temp_device_data *my_data;
     int minor = iminor(inode);
 
@@ -65,9 +64,6 @@ int my_open(struct inode *inode, struct file *file)
 
     my_data = container_of(inode->i_cdev, struct temp_device_data, cdev);
     file->private_data = my_data;
-
-    // initialize device
-    printk(KERN_INFO "[RP1-IO] Minor for device is: %d\n", minor); 
 
     return 0; // success status 
 }

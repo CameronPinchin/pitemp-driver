@@ -23,6 +23,8 @@ BUILDING: CLI Instructions
 2. Build with the provided Makefile:
     # make all
 
+    *
+
 LOADING: CLI Instructions
 
 1. Navigate to the projects src directory:

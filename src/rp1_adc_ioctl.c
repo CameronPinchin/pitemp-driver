@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#include "rp1_adc.h"
+#include "../include/rp1_adc.h"
 
 struct my_ioctl_data {
     __u32 command;          // command being passed
@@ -26,7 +26,7 @@ static void fill_ioctl_data_struct(struct my_ioctl_data * data, __u32 cmd, __u32
 
 static __u32 get_sample_rate(__u32 val)
 {
-    return (48000000)/(96 + val);
+    return (48000000)/(96 + val); // TO-DO: double-check this is behaving correctly
 }
 
 static int read_register(__u32* val, size_t offset)
